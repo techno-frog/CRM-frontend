@@ -1,0 +1,15 @@
+.container {
+  margin-bottom: 1rem;
+}
+
+.backLink {
+  color: var(--primary-color);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}

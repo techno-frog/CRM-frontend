@@ -1,0 +1,16 @@
+.widget {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--card-shadow);
+}
+
+.widget h4 {
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.widget p {
+  color: var(--text-color);
+  margin: 0.25rem 0;
+}

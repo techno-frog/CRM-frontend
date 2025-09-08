@@ -1,0 +1,217 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  background: var(--bg-secondary);
+  overflow: hidden;
+}
+
+/* Фоновый градиент для эффекта аэро */
+.container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 20% 80%,
+      rgba(59, 130, 246, 0.1) 0%,
+      transparent 50%),
+    radial-gradient(circle at 80% 20%,
+      rgba(139, 92, 246, 0.1) 0%,
+      transparent 50%),
+    radial-gradient(circle at 40% 40%,
+      rgba(236, 72, 153, 0.1) 0%,
+      transparent 50%);
+  animation: gradientShift 30s ease infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes gradientShift {
+
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  33% {
+    transform: rotate(120deg) scale(1.1);
+  }
+
+  66% {
+    transform: rotate(240deg) scale(0.9);
+  }
+}
+
+/* Обертка для основного контента */
+.mainWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Область контента */
+.contentArea {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Основной контент */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Прокручиваемый контент */
+.content {
+  flex: 1;
+  /* padding: var(--spacing-lg); */
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  height: 100vh;
+}
+
+/* Секция чата */
+.chatSection {
+  width: 0;
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur) var(--backdrop-saturate);
+  border-left: 1px solid var(--glass-border);
+  transition: width var(--transition-normal);
+  overflow: hidden;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.chatSection.active {
+  width: var(--chat-width);
+}
+
+/* Анимация появления контента */
+.content>* {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Стили для вложенного контента */
+.content>div,
+.content>section,
+.content>article {
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--glass-border);
+  /* border-radius: var(--radius-lg); */
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.content>div:last-child,
+.content>section:last-child,
+.content>article:last-child {
+  margin-bottom: 0;
+}
+
+/* Утилиты для контента */
+.content * {
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+  .content {
+    padding: var(--spacing-md);
+  }
+
+  .chatSection.active {
+    position: fixed;
+    top: var(--topbar-height);
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: var(--z-sidebar);
+  }
+
+  .contentArea.chatActive .main {
+    display: none;
+    /* Скрываем основной контент когда чат открыт на мобилке */
+  }
+}
+
+/* Адаптация для планшетов */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .content {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .chatSection.active {
+    width: 280px;
+    /* Чуть меньше на планшетах */
+  }
+}
+
+/* Скроллбар стилизация */
+.content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: var(--radius-sm);
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+/* Темная тема - дополнительные стили */
+[data-theme="dark"] .container::before {
+  background: radial-gradient(circle at 20% 80%,
+      rgba(96, 165, 250, 0.05) 0%,
+      transparent 50%),
+    radial-gradient(circle at 80% 20%,
+      rgba(167, 139, 250, 0.05) 0%,
+      transparent 50%),
+    radial-gradient(circle at 40% 40%,
+      rgba(251, 113, 133, 0.05) 0%,
+      transparent 50%);
+}

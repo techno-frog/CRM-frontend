@@ -1,0 +1,227 @@
+.topbar {
+  height: var(--topbar-height);
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur) var(--backdrop-saturate);
+  border-bottom: 1px solid var(--glass-border);
+  z-index: var(--z-topbar);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+
+.container {
+  height: 100%;
+  padding: 0 var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+}
+
+/* Мобильная кнопка меню */
+.mobileMenuBtn {
+  display: none;
+  padding: var(--spacing-sm);
+  border: none;
+  background: var(--glass-bg);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.mobileMenuBtn:hover {
+  background: var(--bg-hover);
+  transform: scale(1.05);
+}
+
+/* Приветствие */
+.greeting {
+  flex: 1;
+}
+
+.greeting h3 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.userName {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+/* Действия */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.themeBtn,
+.userBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-color);
+  background: var(--glass-bg);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.themeBtn:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.themeBtn:hover .themeIcon {
+  transform: rotate(180deg);
+}
+
+.themeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  transition: transform var(--transition-slow);
+}
+
+.logoutBtnDesktop {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.05);
+  color: #ef4444;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.logoutBtnDesktop:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* Мобильное меню */
+.mobileMenu {
+  position: fixed;
+  top: var(--topbar-height);
+  left: 0;
+  right: 0;
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur) var(--backdrop-saturate);
+  border-bottom: 1px solid var(--glass-border);
+  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-normal);
+  z-index: var(--z-topbar);
+  display: none;
+  box-shadow: var(--shadow-lg);
+}
+
+.mobileMenu.open {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  gap: var(--spacing-xs);
+}
+
+.mobileNavLink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.mobileNavLink:hover,
+.mobileNavLink:active {
+  background: var(--bg-hover);
+  color: var(--accent-primary);
+}
+
+.mobileActions {
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--border-color);
+}
+
+.mobileLogoutBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  padding: var(--spacing-md);
+  border: none;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.mobileLogoutBtn:active {
+  transform: scale(0.98);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: calc(var(--z-topbar) - 1);
+  display: none;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+  .topbar {
+    left: 0;
+  }
+
+  .topbar.sidebarCollapsed {
+    left: 0;
+  }
+
+  .mobileMenuBtn {
+    display: flex;
+  }
+
+  .logoutBtnDesktop {
+    display: none;
+  }
+
+  .mobileMenu,
+  .overlay {
+    display: block;
+  }
+
+  .greeting h3 {
+    font-size: 1rem;
+  }
+}

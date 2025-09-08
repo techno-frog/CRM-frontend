@@ -1,0 +1,40 @@
+.container {
+  padding: 1rem;
+}
+
+.container h1 {
+  color: var(--text-color);
+  margin-bottom: 2rem;
+}
+
+.accountsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.accountCard {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--card-shadow);
+}
+
+.accountCard h3 {
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.accountCard p {
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.link {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

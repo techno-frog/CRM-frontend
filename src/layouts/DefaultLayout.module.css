@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  padding: 1rem;
+}
+
+.main {
+  flex: 1;
+
+  background-color: var(--bg-primary);
+}
+
+.footer {
+  background-color: var(--bg-secondary);
+  color: var(--footer-text);
+  padding: 1rem;
+  text-align: center;
+}

@@ -1,0 +1,15 @@
+.container {
+  text-align: center;
+  padding: 3rem;
+  height: 100%;
+}
+
+.container h1 {
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.container p {
+  color: var(--text-color);
+  font-size: 1.2rem;
+}

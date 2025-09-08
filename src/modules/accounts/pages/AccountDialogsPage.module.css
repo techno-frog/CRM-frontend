@@ -1,0 +1,15 @@
+.container {
+  padding: 1rem;
+}
+
+.container h1 {
+  color: var(--text-color);
+  margin-bottom: 2rem;
+}
+
+.dialogsList {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--card-shadow);
+}
