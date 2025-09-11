@@ -8,11 +8,13 @@ import {
 } from '../../../../store/slices/createTeamSlice';
 import css from '../../pages/CreateTeam/CreateTeam.module.css';
 import { useCreateTeamMutation } from '../../../../api/teamsApi';
+import { useNavigate } from 'react-router-dom';
 
 export const CreateTeamForm: React.FC = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { teamName, userRole } = useSelector((state: RootState) => state.createTeam);
-  const [create, { isSuccess, isError, error }] = useCreateTeamMutation()
+  const [create, { isSuccess, isError, error, data: team }] = useCreateTeamMutation()
   const handleCreate = () => {
     create({
       title: teamName,
@@ -22,14 +24,14 @@ export const CreateTeamForm: React.FC = () => {
 
   useEffect(() => {
     if (isSuccess)
-      alert('team created')
+      navigate('/team/' + team.id)
     else {
       if (isError) {
         console.log(error)
         alert(error)
       }
     }
-  }, [isSuccess, isError, error])
+  }, [isSuccess, isError, error, team])
 
   return (
     <div className={css.formContainer}>

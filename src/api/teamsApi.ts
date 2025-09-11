@@ -8,6 +8,7 @@ export interface CreateTeamDto {
 }
 
 export interface Team {
+  id: string,
   title: string
   members: string,
   deals: string,
