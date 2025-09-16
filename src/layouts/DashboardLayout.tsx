@@ -7,8 +7,8 @@ import { useLogoutMutation } from '../api/authApi';
 import { useTheme } from '../providers/ThemeProvider';
 import css from './DashboardLayout.module.css';
 
-import { Topbar } from '../shared/components/Navigation/Topbar/Topbar';
-import { Sidebar } from '../shared/components/Navigation/Sidebar/Sidebar';
+import { Topbar } from '../shared/components/Pagination/Topbar/Topbar';
+import { Sidebar } from '../shared/components/Pagination/Sidebar/Sidebar';
 
 export const DashboardLayout: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);

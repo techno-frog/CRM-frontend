@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { RootState } from '../store/store';
+import { createBaseQueryWithReauth } from './baseQueryWithReauth';
 
 export interface CreateTeamDto {
   title: string;
@@ -8,28 +9,27 @@ export interface CreateTeamDto {
 }
 
 export interface Team {
-  id: string,
-  title: string
-  members: string,
-  deals: string,
-  createdBy: string,
-  company: string,
-  isPublic: boolean,
+  _id: string;
+  id: string;
+  title: string;
+  isPublic: boolean;
+  createdBy?: string;
+  company?: string;
+  members?: Array<{ _id?: string; id?: string; name: string; email: string }>;
+  deals?: string[];
+}
+
+export interface Paginated<T> {
+  items: T[];
+  total: number;
+  page: number;
+  limit: number;
 }
 
 export const teamsApi = createApi({
   reducerPath: 'teamsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/v0/teams',
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.accessToken;
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
-  tagTypes: ['Roles', 'UserRole'],
+  baseQuery: createBaseQueryWithReauth('http://localhost:3000/v0/teams'),
+  tagTypes: ['teams', 'userTeams'],
   endpoints: (builder) => ({
     createTeam: builder.mutation<Team, CreateTeamDto>({
       query: (body) => ({
@@ -37,11 +37,28 @@ export const teamsApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Roles'],
+      invalidatesTags: ['teams'],
     }),
+    getMyTeams: builder.query<Team[], void>({
+      query: () => '/my',
+      providesTags: ['teams']
+    }),
+    getTeam: builder.query<Team, string>({
+      query: (id) => `/${id}`,
+      providesTags: (_r, _e, id) => [{ type: 'teams' as const, id }]
+    }),
+    getMyTeamsPaginated: builder.query<Paginated<Team>, { page: number; limit: number }>({
+      query: ({ page, limit }) => `/my/paginated?page=${page}&limit=${limit}`,
+      providesTags: ['teams', 'userTeams']
+    }),
+
   }),
 });
 
 export const {
-  useCreateTeamMutation
+  useCreateTeamMutation,
+
+  useGetMyTeamsQuery,
+  useGetMyTeamsPaginatedQuery,
+  useGetTeamQuery
 } = teamsApi;

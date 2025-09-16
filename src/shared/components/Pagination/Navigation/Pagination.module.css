@@ -1,0 +1,398 @@
+/* Pagination.module.css */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
+}
+
+.wrapper.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Поиск */
+.searchSection {
+  display: flex;
+  justify-content: center;
+}
+
+.searchInput {
+  position: relative;
+  max-width: 300px;
+  width: 100%;
+}
+
+.searchInput input {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) calc(var(--spacing-md) + 24px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+}
+
+.searchInput input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.searchIcon {
+  position: absolute;
+  left: var(--spacing-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+/* Основная пагинация */
+.mainPagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.pageInfo {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Навигация */
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 1;
+  justify-content: center;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border-color);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: 40px;
+}
+
+.navButton:hover:not(:disabled) {
+  background: var(--bg-hover);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.navButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.navButtonText {
+  white-space: nowrap;
+}
+
+/* Номера страниц */
+.pageNumbers {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin: 0 var(--spacing-md);
+}
+
+.pageButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-color);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.pageButton:hover:not(:disabled):not(.activePage) {
+  background: var(--bg-hover);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.activePage {
+  background: var(--accent-gradient);
+  border-color: transparent;
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+  transform: scale(1.05);
+}
+
+.ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: default;
+}
+
+.ellipsis:disabled {
+  opacity: 1;
+}
+
+/* Контролы */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border-color);
+}
+
+/* Быстрый переход */
+.quickJump {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.jumpInput {
+  width: 60px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  text-align: center;
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+}
+
+.jumpInput:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.goButton {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 1px solid var(--accent-primary);
+  background: transparent;
+  color: var(--accent-primary);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.goButton:hover:not(:disabled) {
+  background: var(--accent-primary);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+/* Выбор количества элементов */
+.itemsPerPage {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.limitSelect {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.limitSelect:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Пустое состояние */
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-style: italic;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+
+  .mainPagination {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .navigation {
+    order: 1;
+    width: 100%;
+  }
+
+  .pageInfo {
+    order: 2;
+    text-align: center;
+  }
+
+  .pageNumbers {
+    margin: 0 var(--spacing-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .navButtonText {
+    display: none;
+  }
+
+  .navButton {
+    min-width: 40px;
+    padding: var(--spacing-sm);
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: stretch;
+  }
+
+  .quickJump,
+  .itemsPerPage {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .searchSection {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .searchInput {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageNumbers {
+    gap: 2px;
+  }
+
+  .pageButton {
+    width: 36px;
+    height: 36px;
+    font-size: 0.8rem;
+  }
+
+  .navButton {
+    min-width: 36px;
+    height: 36px;
+  }
+
+  .jumpInput {
+    width: 50px;
+  }
+
+  .controls {
+    font-size: 0.8rem;
+  }
+}
+
+/* Анимации */
+@keyframes slideIn {
+  from {
+    /* opacity: 0; */
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.wrapper {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Скрытие стрелок в input[type="number"] */
+.jumpInput::-webkit-outer-spin-button,
+.jumpInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Улучшения для accessibility */
+.pageButton:focus,
+.navButton:focus,
+.goButton:focus,
+.limitSelect:focus,
+.jumpInput:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* Состояние загрузки */
+.wrapper.loading {
+  position: relative;
+}
+
+.wrapper.loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
+  border-radius: inherit;
+  z-index: 1;
+}

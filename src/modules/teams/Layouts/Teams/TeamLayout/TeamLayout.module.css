@@ -1,0 +1,435 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  bottom: 0;
+  display: flex;
+  padding: 1em;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  overflow: hidden;
+}
+
+/* Фоновый градиент для эффекта аэро */
+.wrapper::before {
+  content: '';
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 80%,
+      rgba(59, 130, 246, 0.1) 0%,
+      transparent 50%),
+    radial-gradient(circle at 80% 20%,
+      rgba(139, 92, 246, 0.1) 0%,
+      transparent 50%),
+    radial-gradient(circle at 40% 40%,
+      rgba(236, 72, 153, 0.1) 0%,
+      transparent 50%);
+  animation: gradientShift 30s ease infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes gradientShift {
+
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  33% {
+    transform: rotate(120deg) scale(1.1);
+  }
+
+  66% {
+    transform: rotate(240deg) scale(0.9);
+  }
+}
+
+/* Контейнер */
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Хедер с кнопкой назад */
+.header {
+  display: flex;
+  border-radius: var(--radius-md);
+  width: 100%;
+  background: var(--glass-bg);
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) 1em;
+  margin-bottom: var(--spacing-lg);
+  flex-shrink: 0;
+  justify-content: space-between;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.backButton:hover {
+  background: var(--bg-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.backButton:active {
+  transform: translateY(0);
+}
+
+/* Главная область контента */
+.mainContent {
+  flex: 1;
+  display: flex;
+  gap: var(--spacing-lg);
+  overflow: hidden;
+}
+
+/* Основная секция */
+.contentSection {
+  flex: 1;
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur) var(--backdrop-saturate);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.contentSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+/* Секция участников */
+.membersSection {
+  width: 320px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur) var(--backdrop-saturate);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.membersSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.membersHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.membersIcon {
+  width: 40px;
+  height: 40px;
+  background: var(--accent-gradient);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.membersTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Заглушка для пустых участников */
+.emptyMembers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 200px;
+  gap: var(--spacing-md);
+}
+
+.emptyMembersIcon {
+  width: 64px;
+  height: 64px;
+  background: var(--glass-bg);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.emptyMembersText {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.emptyMembersTitle {
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+/* Список участников */
+.membersList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.memberItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.memberItem:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.memberAvatar {
+  width: 40px;
+  height: 40px;
+  background: var(--accent-gradient);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.memberInfo {
+  flex: 1;
+}
+
+.memberName {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  margin-bottom: 2px;
+}
+
+.memberRole {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+/* Skeleton for members */
+.skeletonMember {
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--spacing-sm);
+}
+
+.skeletonMember::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Анимация появления контента */
+.contentSection>*,
+.membersSection>* {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Скроллбар стилизация */
+.contentSection::-webkit-scrollbar,
+.membersSection::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.contentSection::-webkit-scrollbar-track,
+.membersSection::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: var(--radius-sm);
+}
+
+.contentSection::-webkit-scrollbar-thumb,
+.membersSection::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.contentSection::-webkit-scrollbar-thumb:hover,
+.membersSection::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+/* Темная тема - дополнительные стили */
+[data-theme="dark"] .wrapper::before {
+  background: radial-gradient(circle at 20% 80%,
+      rgba(96, 165, 250, 0.05) 0%,
+      transparent 50%),
+    radial-gradient(circle at 80% 20%,
+      rgba(167, 139, 250, 0.05) 0%,
+      transparent 50%),
+    radial-gradient(circle at 40% 40%,
+      rgba(251, 113, 133, 0.05) 0%,
+      transparent 50%);
+}
+
+/* Responsive Design */
+
+/* Планшеты */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    padding: var(--spacing-md);
+  }
+
+  .membersSection {
+    width: 280px;
+  }
+
+  .mainContent {
+    gap: var(--spacing-md);
+  }
+}
+
+/* Мобильные устройства */
+@media (max-width: 767px) {
+  .container {
+    padding: var(--spacing-md);
+  }
+
+  .mainContent {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .membersSection {
+    width: 100%;
+    order: -1;
+    flex-shrink: 1;
+  }
+
+  .emptyMembers {
+    height: 120px;
+  }
+
+  .emptyMembersIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .header {
+    padding: var(--spacing-md) 0;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .backButton {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 480px) {
+  .header {
+    padding: var(--spacing-sm);
+  }
+
+  .contentSection,
+  .membersSection {
+    padding: var(--spacing-lg);
+  }
+
+  .membersTitle {
+    font-size: 1.1rem;
+  }
+
+  .memberItem {
+    padding: var(--spacing-sm);
+  }
+
+  .memberAvatar {
+    width: 36px;
+    height: 36px;
+    font-size: 0.8rem;
+  }
+}

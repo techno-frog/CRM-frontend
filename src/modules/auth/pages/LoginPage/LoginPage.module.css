@@ -1,80 +1,110 @@
 .container {
-  display: flex;
-  justify-content: center;
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--bg-secondary);
+  overflow: hidden;
+}
+
+.backdrop {
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle at 20% 80%, rgba(59,130,246,.12) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(139,92,246,.12) 0%, transparent 50%),
+              radial-gradient(circle at 40% 40%, rgba(236,72,153,.10) 0%, transparent 50%);
+  filter: blur(0px);
+  animation: floaty 30s linear infinite;
+}
+
+@keyframes floaty {
+  0%,100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+}
+
+.cardWrapper {
+  position: relative;
+  width: min(92vw, 440px);
+  padding: var(--spacing-xl);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: var(--backdrop-blur) var(--backdrop-saturate);
+  z-index: 1;
+}
+
+.brand {
+  display: inline-flex;
   align-items: center;
-  min-height: 100vh;
-  background-color: var(--background-color);
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--accent-gradient);
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: .85rem;
+  letter-spacing: .2px;
 }
 
-.form {
-  background: var(--card-bg);
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px var(--card-shadow);
-  width: 100%;
-  max-width: 400px;
-}
+.form { margin-top: var(--spacing-lg); }
 
-.form h2 {
-  margin-bottom: 1.5rem;
-  color: var(--text-color);
-  text-align: center;
+.title {
+  margin: 0 0 4px 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.subtitle {
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--text-secondary);
 }
 
 .error {
-  background-color: rgba(220, 53, 69, 0.1);
-  border: 1px solid var(--danger-color);
-  color: var(--danger-color);
-  padding: 0.75rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.45);
+  color: #ef4444;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
 }
 
-.field {
-  margin-bottom: 1rem;
-}
+.field { margin-bottom: var(--spacing-md); }
+.field label { display:block; margin-bottom: 6px; color: var(--text-primary); font-weight: 600; }
 
-.field label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--text-color);
-  font-weight: 500;
-}
-
+.inputWrap { position: relative; }
+.inputIcon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
 .field input {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--input-border);
-  border-radius: 4px;
-  background-color: var(--input-bg);
-  color: var(--text-color);
-  font-size: 1rem;
-  transition: border-color 0.2s;
-}
-
-.field input:focus {
+  padding: 12px 12px 12px 36px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--input-bg);
+  color: var(--text-primary);
   outline: none;
-  border-color: var(--input-focus);
+  transition: all var(--transition-fast);
 }
+.field input:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px rgba(59,130,246,.15); }
+
+.actionsRow { display:flex; align-items:center; justify-content: space-between; margin: 6px 0 var(--spacing-md) 0; }
+.checkbox { display:flex; align-items:center; gap:8px; color: var(--text-secondary); font-size: .9rem; }
+.link { color: var(--accent-primary); text-decoration: none; }
+.link:hover { text-decoration: underline; }
 
 .submitBtn {
   width: 100%;
-  padding: 0.75rem;
-  background-color: var(--primary-color);
-  color: white;
+  padding: 12px 16px;
+  background: var(--accent-gradient);
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: 0 12px 28px rgba(59,130,246,.25);
 }
+.submitBtn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 16px 36px rgba(59,130,246,.3); }
+.submitBtn:disabled { opacity: .7; cursor: not-allowed; }
 
-.submitBtn:hover:not(:disabled) {
-  background-color: #0056b3;
-}
-
-.submitBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+.footerNote { margin-top: var(--spacing-md); text-align: center; color: var(--text-secondary); }
