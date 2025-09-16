@@ -1,0 +1,314 @@
+/* Container sizing */
+.calendarWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* Header */
+.calendarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.headerTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.headerTz {
+  color: var(--text-secondary);
+  font-weight: 400;
+  font-size: 0.85rem;
+}
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.select {
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+}
+
+.ghostBtn {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.primaryBtn {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.viewSwitch {
+  display: flex;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.switchBtn {
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.switchBtn:not(:last-child) {
+  border-right: 1px solid var(--glass-border);
+}
+
+.active {
+  background: var(--bg-hover);
+}
+
+/* Month view */
+.monthView {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex: 1;
+  min-height: 0;
+}
+
+.weekdaysRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--spacing-xs);
+}
+
+.weekday {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  text-align: right;
+  padding-right: 6px;
+}
+
+.monthGrid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: var(--spacing-xs);
+}
+
+.emptyCell {
+  background: rgba(255,255,255,0.03);
+  border: 1px dashed var(--glass-border);
+  border-radius: var(--radius-sm);
+}
+
+.dayCell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+  padding: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.dayCell:hover {
+  background: rgba(255,255,255,0.07);
+  transform: translateY(-1px);
+}
+
+.today {
+  outline: 2px solid var(--accent-primary);
+}
+
+.dayNumber {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.eventDots {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.eventDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.moreBadge {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Day view */
+.dayView {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: var(--spacing-md);
+}
+
+.dayToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1em;
+}
+
+.dayInfo {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.daySwitch {
+  display: flex;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--spacing-sm);
+  flex: 1;
+  min-height: 0;
+}
+
+.hours {
+  display: flex;
+  flex-direction: column;
+}
+
+.hourLabel {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.timelineCanvas {
+  position: relative;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+/* Hour block with minute grid */
+.hourBlock {
+  position: relative;
+  padding: 6px 8px;
+  border-top: 1px solid var(--glass-border);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc((100% / 12) - 1px),
+    rgba(255, 255, 255, 0.05) calc(100% / 12)
+  );
+}
+
+.hourRows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+}
+
+.hourEventRow {
+  position: relative;
+  height: 28px;
+}
+
+.hourEventBar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: var(--radius-sm);
+  color: white;
+  padding: 4px 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* kept .eventTitle/.eventTime for labels inside hourEventBar */
+
+.eventTitle {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.eventTime {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.dayList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.emptyDay {
+  color: var(--text-secondary);
+}
+
+.listItem {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  gap: var(--spacing-sm);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+}
+
+.listTime {
+  color: var(--text-secondary);
+}
+
+.listBody {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.listTitle {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.listType {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}

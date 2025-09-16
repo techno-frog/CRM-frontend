@@ -84,7 +84,7 @@ body {
   /* Основные цвета */
   --text-color: #333333;
   --bg-primary: rgba(155, 77, 77, 0.85);
-  --bg-secondary: rgba(248, 250, 252, 0.9);
+  --bg-secondary: rgba(133, 192, 247, 0.9);
   --bg-tertiary: rgba(241, 245, 249, 0.95);
   --bg-sidebar: rgba(255, 255, 255, 0.75);
   --bg-hover: rgba(59, 130, 246, 0.08);
@@ -110,8 +110,8 @@ body {
   --shadow-glow: 0 0 24px rgba(59, 130, 246, 0.15);
 
   /* Стекломорфизм */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-bg: rgba(194, 219, 203, 0.7);
+  --glass-border: rgba(175, 191, 236, 0.5);
   --backdrop-blur: blur(16px);
   --backdrop-saturate: saturate(180%);
 }
