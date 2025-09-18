@@ -9,6 +9,8 @@ import Teams from "./pages/Teams/Teams";
 import TeamCallendarPage from "./pages/Callendar/TeamCallendar";
 import { RiTeamFill } from "react-icons/ri";
 import TeamCalendarLayout from "./Layouts/Teams/CalendarLayout/TeamCalendarLayout";
+import TeamInvitesLayout from "./Layouts/Teams/InvitesLayout/TeamInvitesLayout";
+import TeamInvites from "./pages/Invites/TeamInvites";
 
 export const teamsModule: Module = {
   id: "teams-module",
@@ -34,6 +36,13 @@ export const teamsModule: Module = {
       component: TeamCallendarPage,
       navigable: false,
       layout: TeamCalendarLayout,
+    },
+    {
+      path: '/team/:id/invites',
+      title: 'Приглашения',
+      component: TeamInvites,
+      navigable: false,
+      layout: TeamInvitesLayout,
     },
     {
       path: '/createTeam',

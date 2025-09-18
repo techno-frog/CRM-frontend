@@ -10,7 +10,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import css from './Team.module.css';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetTeamQuery } from '../../../../api/teamsApi';
 
 
@@ -18,6 +18,7 @@ const Team: React.FC = () => {
 
   const { id } = useParams();
   const { data: team, isFetching, error } = useGetTeamQuery(id || '', { skip: !id });
+  const navigate = useNavigate();
 
   return (
     <div className={css.teamContainer}>
@@ -102,7 +103,7 @@ const Team: React.FC = () => {
 
       {/* Кнопки действий */}
       <div className={css.teamActions}>
-        <button className={css.actionButton}>
+        <button onClick={() => navigate('invites')} className={css.actionButton}>
           <UserPlus size={20} />
           Пригласить участника
         </button>

@@ -3,6 +3,7 @@ import { baseApi } from '../api/baseApi';
 import authReducer from './slices/authSlice';
 import createTeamReducer from './slices/createTeamSlice';
 import { rolesApi } from '../api/rolesApi';
+import { invitesApi } from '../api/invitesApi';
 import { teamsApi } from '../api/teamsApi';
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
     [rolesApi.reducerPath]: rolesApi.reducer,
     [teamsApi.reducerPath]: teamsApi.reducer,
+    [invitesApi.reducerPath]: invitesApi.reducer,
     createTeam: createTeamReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -18,6 +20,7 @@ export const store = configureStore({
       .concat(baseApi.middleware)
       .concat(rolesApi.middleware)
       .concat(teamsApi.middleware)
+      .concat(invitesApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

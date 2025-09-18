@@ -29,7 +29,8 @@ export const createBaseQueryWithReauth = (baseUrl: string) => {
   const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions);
 
-    const shouldRefresh = result.error && (result.error.status === 401 || result.error.status === 403);
+    // Рефреш имеет смысл только при 401 (просрочен/некорректный accessToken)
+    const shouldRefresh = result.error && result.error.status === 401;
     if (shouldRefresh) {
       const refreshToken = (api.getState() as RootState).auth.refreshToken;
       if (!refreshToken) {

@@ -85,6 +85,41 @@
   background: var(--bg-hover);
 }
 
+/* Mobile: stack header rows and make text adaptive */
+@media (max-width: 767px) {
+  .calendarHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+  }
+
+  .headerTitle {
+    line-height: 1.2;
+  }
+
+  .headerControls {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  /* Ensure last hours are visible above mobile dock */
+  .dayView {
+    padding-bottom: 120px;
+    flex: none;
+  }
+
+  .timeline {
+    flex: none;
+  }
+
+  .timelineCanvas {
+    padding-bottom: 60px;
+    overflow: visible;
+  }
+}
+
 /* Month view */
 .monthView {
   display: flex;
@@ -117,7 +152,7 @@
 }
 
 .emptyCell {
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px dashed var(--glass-border);
   border-radius: var(--radius-sm);
 }
@@ -129,7 +164,7 @@
   gap: 6px;
   align-items: flex-end;
   padding: 8px;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -137,7 +172,7 @@
 }
 
 .dayCell:hover {
-  background: rgba(255,255,255,0.07);
+  background: rgba(255, 255, 255, 0.07);
   transform: translateY(-1px);
 }
 
@@ -225,12 +260,10 @@
   position: relative;
   padding: 6px 8px;
   border-top: 1px solid var(--glass-border);
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent calc((100% / 12) - 1px),
-    rgba(255, 255, 255, 0.05) calc(100% / 12)
-  );
+  background-image: repeating-linear-gradient(to bottom,
+      transparent 0,
+      transparent calc((100% / 12) - 1px),
+      rgba(255, 255, 255, 0.05) calc(100% / 12));
 }
 
 .hourRows {
@@ -252,7 +285,7 @@
   border-radius: var(--radius-sm);
   color: white;
   padding: 4px 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -311,4 +344,9 @@
 .listType {
   color: var(--text-secondary);
   font-size: 0.85rem;
+}
+
+
+.dayList {
+  padding-bottom: 2000px !important;
 }

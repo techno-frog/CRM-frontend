@@ -75,8 +75,10 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
         state.isLoading = false;
       })
-      .addMatcher(authApi.endpoints.getMe.matchRejected, (state) => {
+      .addMatcher(authApi.endpoints.getMe.matchRejected, (state, { payload }) => {
         state.user = null;
+        alert('fck')
+        console.log(payload)
         state.accessToken = null;
         state.refreshToken = null;
         state.isAuthenticated = false;
