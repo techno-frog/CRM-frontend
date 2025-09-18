@@ -8,7 +8,12 @@ export interface Invite {
   maxActivations: number;
   activationsUsed: number;
   email?: string;
+  role?: string;
+  note?: string;
+  isPerpetual?: boolean;
+  expiresAt?: string;
   revoked?: boolean;
+  createdBy?: string | { _id: string; email: string; name?: string; id?: string };
   createdAt: string;
 }
 
@@ -16,12 +21,16 @@ export interface CreateInviteLinkDto {
   teamId: string;
   maxActivations?: number;
   expiresAt?: string;
+  role?: string;
+  note?: string;
 }
 
 export interface SendInviteDto {
   teamId: string;
   email: string;
   maxActivations?: number;
+  role?: string;
+  note?: string;
 }
 
 export const invitesApi = createApi({
@@ -43,6 +52,7 @@ export const invitesApi = createApi({
     }),
     sendInvite: builder.mutation<{ status: 'ok' }, SendInviteDto>({
       query: (body) => ({ url: '/send', method: 'POST', body }),
+      invalidatesTags: (_r, _e, { teamId }) => [{ type: 'Invites', id: teamId }],
     }),
     revokeInvite: builder.mutation<{ status: 'ok' }, { id: string; teamId: string }>({
       query: ({ id }) => ({ url: `/${id}`, method: 'DELETE' }),

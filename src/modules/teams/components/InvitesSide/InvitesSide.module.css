@@ -21,6 +21,11 @@
  .itemHeader { display: flex; justify-content: space-between; align-items: center; }
  .itemEmail { font-weight: 600; }
  .meta { color: var(--text-secondary); font-size: 0.85rem; }
- .token { font-size: 0.8rem; word-break: break-all; opacity: 0.9; }
- .revokeBtn { margin-top: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 6px 8px; cursor: pointer; }
+.token { font-size: 0.8rem; word-break: break-all; opacity: 0.9; }
+.revokeBtn { margin-top: 6px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 6px 8px; cursor: pointer; }
 
+.inlineRow { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); margin-top: 6px; }
+.inlineLeft { display: flex; align-items: center; gap: var(--spacing-sm); }
+.iconBtn { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-primary); width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); cursor: pointer; }
+.iconBtn:hover { background: var(--bg-hover); }
+.iconDanger { color: salmon; border-color: rgba(250,128,114,0.3); }

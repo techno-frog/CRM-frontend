@@ -1,34 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useCreateInviteLinkMutation, useSendInviteMutation, useLazySearchUsersQuery, useInviteUserMutation } from '../../../../api/invitesApi';
+import { useSendInviteMutation, useLazySearchUsersQuery, useInviteUserMutation } from '../../../../api/invitesApi';
 import { Search, Link as LinkIcon, Copy, Send } from 'lucide-react';
+import CreateInviteModal from './CreateInviteModal';
 import css from './TeamInvites.module.css';
 
 const TeamInvites: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const teamId = id || '';
 
-  const [maxActs, setMaxActs] = useState<number>(1);
+  const [maxActs] = useState<number>(1);
   const [email, setEmail] = useState('');
-  const [expiresAt, setExpiresAt] = useState<string>('');
+  const [expiresAt] = useState<string>('');
+  const [role] = useState<string>('member');
+  const [note] = useState<string>('');
+  const [perpetualInvite] = useState<boolean>(false);
   const [link, setLink] = useState<string>('');
   const [query, setQuery] = useState('');
   const [search, { data: users, isFetching: searching }] = useLazySearchUsersQuery();
 
-  const [createLink, { isLoading: creating }] = useCreateInviteLinkMutation();
   const [sendInvite, { isLoading: sending }] = useSendInviteMutation();
   const [inviteUser] = useInviteUserMutation();
-
-  const handleCreateLink = async () => {
-    if (!teamId) return;
-    const res = await createLink({ teamId, maxActivations: maxActs, expiresAt: expiresAt || undefined }).unwrap();
-    const url = `${window.location.origin}/join/${res.token}`;
-    setLink(url);
-  };
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleSend = async () => {
     if (!teamId || !email) return;
-    await sendInvite({ teamId, email, maxActivations: maxActs }).unwrap();
+    await sendInvite({ teamId, email, maxActivations: maxActs, role, note }).unwrap();
     setEmail('');
   };
 
@@ -44,58 +41,62 @@ const TeamInvites: React.FC = () => {
   };
 
   return (
-    <div className={css.wrapper}>
-      <h2 className={css.title}>Приглашения в команду</h2>
+    <>
+      <div className={css.wrapper}>
+        <h2 className={css.title}>Приглашения в команду</h2>
 
-      <section className={css.section}>
-        <h3 className={css.sectionTitle}>Поиск пользователя</h3>
-        <div className={css.row}>
-          <div className={css.inputWrap}>
-            <Search size={16} />
-            <input className={css.input} placeholder="Email или имя" value={query} onChange={(e) => setQuery(e.target.value)} />
-          </div>
-        </div>
-        {searching && <div className={css.muted}>Идет поиск…</div>}
-        {users && users.length > 0 && (
-          <div className={css.list}>
-            {users.map(u => (
-              <div key={u.id} className={css.card}>
-                <div className={css.cardBody}>
-                  <div className={css.cardTitle}>{u.name || u.email}</div>
-                  <div className={css.cardSubtitle}>{u.email}</div>
-                </div>
-                <button className={css.secondaryBtn} onClick={() => inviteUser({ teamId, userEmail: u.email })}>Пригласить</button>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      <section className={css.section}>
-        <h3 className={css.sectionTitle}>Мульти‑инвайт / Ссылка</h3>
-        <div className={css.row}>
-          <label className={css.label}>Активаций:</label>
-          <input className={css.input} type="number" min={1} value={maxActs} onChange={(e) => setMaxActs(parseInt(e.target.value || '1', 10))} style={{ width: 120 }} />
-          <label className={css.label}>Срок:</label>
-          <input className={css.input} type="datetime-local" value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} style={{ width: 220 }} />
-          <button className={css.primaryBtn} disabled={creating} onClick={handleCreateLink}><LinkIcon size={16} />Создать ссылку</button>
-        </div>
-        {link && (
+        <section className={css.section}>
+          <h3 className={css.sectionTitle}>Поиск пользователя</h3>
           <div className={css.row}>
-            <input className={css.input} readOnly value={link} />
-            <button className={css.secondaryBtn} onClick={copyLink}><Copy size={16} />Копировать</button>
+            <div className={css.inputWrap}>
+              <Search size={16} />
+              <input className={css.input} placeholder="Email или имя" value={query} onChange={(e) => setQuery(e.target.value)} />
+            </div>
           </div>
-        )}
-      </section>
+          {searching && <div className={css.muted}>Идет поиск…</div>}
+          {users && users.length > 0 && (
+            <div className={css.list}>
+              {users.map(u => (
+                <div key={u.id} className={css.card}>
+                  <div className={css.cardBody}>
+                    <div className={css.cardTitle}>{u.name || u.email}</div>
+                    <div className={css.cardSubtitle}>{u.email}</div>
+                  </div>
+                  <button className={css.secondaryBtn} onClick={() => inviteUser({ teamId, userEmail: u.email, expiresAt: perpetualInvite ? undefined : expiresAt })}>Пригласить</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
 
-      <section className={css.section}>
-        <h3 className={css.sectionTitle}>Отправить на почту</h3>
-        <div className={css.row}>
-          <input className={css.input} placeholder="email@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <button className={css.primaryBtn} disabled={sending} onClick={handleSend}><Send size={16} />Отправить</button>
-        </div>
-      </section>
-    </div>
+        <section className={css.section}>
+          <h3 className={css.sectionTitle}>Мульти‑инвайт / Ссылка </h3>
+          <div className={css.row}>
+            <button className={css.primaryBtn} onClick={() => setModalOpen(true)}><LinkIcon size={16} />Создать ссылку</button>
+          </div>
+          {link && (
+            <div className={css.row}>
+              <input className={css.input} readOnly value={link} />
+              <button className={css.secondaryBtn} onClick={copyLink}><Copy size={16} />Копировать</button>
+            </div>
+          )}
+        </section>
+
+        <section className={css.section}>
+          <h3 className={css.sectionTitle}>Отправить на почту</h3>
+          <div className={css.row}>
+            <input className={css.input} placeholder="email@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <button className={css.primaryBtn} disabled={sending} onClick={handleSend}><Send size={16} />Отправить</button>
+          </div>
+        </section>
+      </div>
+      <CreateInviteModal
+        teamId={teamId}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onCreated={(token) => setLink(`${window.location.origin}/join/${token}`)}
+      />
+    </>
   );
 };
 
