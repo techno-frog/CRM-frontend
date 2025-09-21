@@ -3,6 +3,8 @@ import Modal from '../../../../shared/components/Modal/Modal';
 import css from './CreateInviteModal.module.css';
 import modalCss from '../../../../shared/components/Modal/Modal.module.css';
 import { useCreateInviteLinkMutation } from '../../../../api/invitesApi';
+import { useNotify } from '../../../../hooks/useNotify';
+import { extractErrorMessage } from '../../../../utils/extractErrorMessage';
 
 interface Props {
   teamId: string;
@@ -17,14 +19,21 @@ const CreateInviteModal: React.FC<Props> = ({ teamId, open, onClose, onCreated }
   const [maxActs, setMaxActs] = useState(1);
   const [expiresAt, setExpiresAt] = useState('');
   const [createLink, { isLoading }] = useCreateInviteLinkMutation();
+  const { success, error: notifyError } = useNotify();
 
   const minus = () => setMaxActs(Math.max(1, maxActs - 1));
   const plus = () => setMaxActs(Math.min(9999, maxActs + 1));
 
   const submit = async () => {
-    const res = await createLink({ teamId, maxActivations: maxActs, role, note, expiresAt: expiresAt || undefined }).unwrap();
-    onCreated?.(res.token);
-    onClose();
+    try {
+      const res = await createLink({ teamId, maxActivations: maxActs, role, note, expiresAt: expiresAt || undefined }).unwrap();
+      onCreated?.(res.token);
+      success({ title: 'Ссылка готова', text: 'Скопируй её и поделись с командой' });
+      onClose();
+    } catch (err) {
+      console.error('Ошибка создания ссылки-приглашения:', err);
+      notifyError({ title: 'Не удалось создать ссылку', text: extractErrorMessage(err, 'Попробуй снова позже') });
+    }
   };
 
   return (

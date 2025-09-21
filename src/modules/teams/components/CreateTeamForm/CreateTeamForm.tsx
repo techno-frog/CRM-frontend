@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Users, Plus } from 'lucide-react';
 import type { RootState } from '../../../../store/store';
@@ -9,29 +9,30 @@ import {
 import css from '../../pages/CreateTeam/CreateTeam.module.css';
 import { useCreateTeamMutation } from '../../../../api/teamsApi';
 import { useNavigate } from 'react-router-dom';
+import { useNotify } from '../../../../hooks/useNotify';
+import { extractErrorMessage } from '../../../../utils/extractErrorMessage';
 
 export const CreateTeamForm: React.FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const { teamName, userRole } = useSelector((state: RootState) => state.createTeam);
-  const [create, { isSuccess, isError, error, data: team }] = useCreateTeamMutation()
-  const handleCreate = () => {
-    create({
-      title: teamName,
-      role: userRole
-    })
-  }
+  const [create, { isLoading }] = useCreateTeamMutation()
+  const { success, error: notifyError } = useNotify();
 
-  useEffect(() => {
-    if (isSuccess)
-      navigate('/team/' + team.id)
-    else {
-      if (isError) {
-        console.log(error)
-        alert(error)
-      }
+  const handleCreate = async () => {
+    try {
+      const created = await create({
+        title: teamName,
+        role: userRole
+      }).unwrap();
+      const redirectId = (created as any).id || (created as any)._id;
+      success({ title: 'Команда готова', text: 'Можно приглашать коллег' });
+      if (redirectId) navigate('/team/' + redirectId);
+    } catch (err) {
+      console.error('Ошибка создания команды:', err);
+      notifyError({ title: 'Не удалось создать команду', text: extractErrorMessage(err, 'Попробуй ещё раз') });
     }
-  }, [isSuccess, isError, error, team])
+  }
 
   return (
     <div className={css.formContainer}>
@@ -114,10 +115,10 @@ export const CreateTeamForm: React.FC = () => {
           <button
             onClick={handleCreate}
             className={css.primaryBtn}
-            disabled={!teamName.trim() || !userRole}
+            disabled={!teamName.trim() || !userRole || isLoading}
           >
             <Users size={20} />
-            Создать команду
+            {isLoading ? 'Создаём…' : 'Создать команду'}
           </button>
         </div>
       </div>

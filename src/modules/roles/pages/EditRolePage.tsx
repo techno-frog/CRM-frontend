@@ -3,12 +3,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useGetRoleByIdQuery, useUpdateRoleMutation, Action, ResourceType } from '../../../api/rolesApi';
 import { RoleForm } from '../components/RoleForm';
 import css from './CreateRolePage.module.css';
+import { useNotify } from '../../../hooks/useNotify';
+import { extractErrorMessage } from '../../../utils/extractErrorMessage';
 
 export const EditRolePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: role, isLoading: isLoadingRole } = useGetRoleByIdQuery(id!);
   const [updateRole, { isLoading: isUpdating, error }] = useUpdateRoleMutation();
+  const { success, error: notifyError } = useNotify();
 
   const handleSubmit = async (data: {
     name: string;
@@ -19,9 +22,11 @@ export const EditRolePage: React.FC = () => {
   }) => {
     try {
       await updateRole({ id: id!, body: data }).unwrap();
+      success({ title: 'Роль обновлена', text: 'Изменения уже в силе' });
       navigate('/roles');
     } catch (err) {
       console.error('Ошибка обновления роли:', err);
+      notifyError({ title: 'Не удалось сохранить изменения', text: extractErrorMessage(err, 'Проверь данные и попробуй снова') });
     }
   };
 

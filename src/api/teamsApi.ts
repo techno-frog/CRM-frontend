@@ -26,6 +26,18 @@ export interface Paginated<T> {
   limit: number;
 }
 
+export interface JoinTeamRequest {
+  inviteCode: string;
+}
+
+export interface JoinTeamResponse {
+  message: string;
+  team: {
+    id: string;
+    title: string;
+  };
+}
+
 export const teamsApi = createApi({
   reducerPath: 'teamsApi',
   baseQuery: createBaseQueryWithReauth('http://localhost:3000/v0/teams'),
@@ -51,13 +63,21 @@ export const teamsApi = createApi({
       query: ({ page, limit }) => `/my/paginated?page=${page}&limit=${limit}`,
       providesTags: ['teams', 'userTeams']
     }),
+    joinTeam: builder.mutation<JoinTeamResponse, JoinTeamRequest>({
+      query: (data) => ({
+        url: '/join',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['teams', 'userTeams'],
+    }),
 
   }),
 });
 
 export const {
   useCreateTeamMutation,
-
+  useJoinTeamMutation,
   useGetMyTeamsQuery,
   useGetMyTeamsPaginatedQuery,
   useGetTeamQuery

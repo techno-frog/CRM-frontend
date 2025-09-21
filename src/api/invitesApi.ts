@@ -33,6 +33,31 @@ export interface SendInviteDto {
   note?: string;
 }
 
+export interface PublicInvite {
+  _id?: string;
+  teamId: string;
+  token?: string;
+  role: string;
+  note?: string;
+  expiresAt?: string;
+  // New format (preferred)
+  team?: {
+    _id: string;
+    title: string;
+    description?: string;
+  };
+  createdBy?: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+  // Old format (fallback)
+  teamName?: string;
+  inviterId?: string;
+  emailRestricted?: boolean;
+  email?: string;
+}
+
 export const invitesApi = createApi({
   reducerPath: 'invitesApi',
   baseQuery: createBaseQueryWithReauth('http://localhost:3000/v0/invites'),
@@ -65,6 +90,12 @@ export const invitesApi = createApi({
     searchUsers: builder.query<{ id: string; email: string; name?: string }[], string>({
       query: (q) => `/search-users?q=${encodeURIComponent(q)}`,
     }),
+    getPublicInvite: builder.query<PublicInvite, string>({
+      query: (token) => `/public/${token}`,
+    }),
+    acceptInvite: builder.mutation<{ status: 'ok'; team: any }, string>({
+      query: (token) => ({ url: '/accept', method: 'POST', body: { token } }),
+    }),
   }),
 });
 
@@ -76,4 +107,6 @@ export const {
   useRevokeInviteMutation,
   useUpdateInviteMutation,
   useLazySearchUsersQuery,
+  useGetPublicInviteQuery,
+  useAcceptInviteMutation,
 } = invitesApi;

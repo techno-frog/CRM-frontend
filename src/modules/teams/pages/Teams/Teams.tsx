@@ -1,13 +1,20 @@
 import type { FC } from 'react';
+import { useState } from 'react';
+import { Plus, UserPlus } from 'lucide-react';
 import css from './Teams.module.css';
 import { useGetMyTeamsPaginatedQuery } from '../../../../api/teamsApi';
 import usePagination from '../../../../shared/components/Pagination/Navigation/usePagination';
 import TeamList from '../../components/TeamList/TeamList';
+import { CreateTeamModal } from '../../components/CreateTeamModal/CreateTeamModal';
+import { JoinTeamModal } from '../../components/JoinTeamModal/JoinTeamModal';
 
 
 interface IProps { }
 
 const Teams: FC<IProps> = () => {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+
   const { Pagination, page, limit, setPage, setLimit } = usePagination({
     initialPage: 1,
     initialLimit: 10,
@@ -18,6 +25,26 @@ const Teams: FC<IProps> = () => {
 
   return (
     <div className={css.wrapper}>
+      <div className={css.header}>
+        <h1 className={css.title}>Команды</h1>
+        <div className={css.actions}>
+          <button
+            className={css.joinBtn}
+            onClick={() => setIsJoinModalOpen(true)}
+          >
+            <UserPlus size={20} />
+            Присоединиться к команде
+          </button>
+          <button
+            className={css.createBtn}
+            onClick={() => setIsCreateModalOpen(true)}
+          >
+            <Plus size={20} />
+            Создать команду
+          </button>
+        </div>
+      </div>
+
       <TeamList items={data?.items} loading={isFetching} />
 
       <div className={css.footer}>
@@ -41,6 +68,15 @@ const Teams: FC<IProps> = () => {
         />
       </div>
 
+      <CreateTeamModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
+
+      <JoinTeamModal
+        isOpen={isJoinModalOpen}
+        onClose={() => setIsJoinModalOpen(false)}
+      />
     </div>
   );
 };

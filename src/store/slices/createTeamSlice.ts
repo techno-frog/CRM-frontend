@@ -7,10 +7,19 @@ export interface InviteItem {
 
 export interface CreateTeamState {
   // Step management
-  currentStep: 1 | 2;
+  currentStep: 0 | 0.5 | 1 | 2;
   selectedAction: 'create' | 'join' | 'company' | null;
   isTransitioning: boolean;
   companyRegion: 'usa' | 'europe' | null;
+  isRegistrationMode: boolean;
+  pendingRegistrationEmail: string;
+  pendingRegistrationData: {
+    email: string;
+    username: string;
+    password: string;
+    name: string;
+    inviteCode?: string;
+  } | null;
 
   // Join team form
   inviteCode: string;
@@ -31,10 +40,13 @@ export interface CreateTeamState {
 
 const initialState: CreateTeamState = {
   // Step management
-  currentStep: 1,
+  currentStep: 0,
   selectedAction: null,
   isTransitioning: false,
   companyRegion: null,
+  isRegistrationMode: false,
+  pendingRegistrationEmail: '',
+  pendingRegistrationData: null,
 
   // Join team form
   inviteCode: '',
@@ -68,8 +80,15 @@ const createTeamSlice = createSlice({
       state.selectedAction = action.payload;
     },
 
-    setCurrentStep: (state, action: PayloadAction<1 | 2>) => {
+    setCurrentStep: (state, action: PayloadAction<0 | 0.5 | 1 | 2>) => {
       state.currentStep = action.payload;
+    },
+
+    setRegistrationMode: (state, action: PayloadAction<boolean>) => {
+      state.isRegistrationMode = action.payload;
+      if (action.payload) {
+        state.currentStep = 0;
+      }
     },
 
     setIsTransitioning: (state, action: PayloadAction<boolean>) => {
@@ -78,6 +97,20 @@ const createTeamSlice = createSlice({
 
     setCompanyRegion: (state, action: PayloadAction<'usa' | 'europe' | null>) => {
       state.companyRegion = action.payload;
+    },
+
+    setPendingRegistrationEmail: (state, action: PayloadAction<string>) => {
+      state.pendingRegistrationEmail = action.payload;
+    },
+
+    setPendingRegistrationData: (state, action: PayloadAction<{
+      email: string;
+      username: string;
+      password: string;
+      name: string;
+      inviteCode?: string;
+    } | null>) => {
+      state.pendingRegistrationData = action.payload;
     },
 
     // Join team actions
@@ -163,7 +196,7 @@ const createTeamSlice = createSlice({
     },
 
     resetToFirstStep: (state) => {
-      state.currentStep = 1;
+      state.currentStep = state.isRegistrationMode ? 0 : 1;
       state.selectedAction = null;
       state.companyRegion = null;
       state.isTransitioning = false;
@@ -175,8 +208,11 @@ export const {
   // Step management
   setSelectedAction,
   setCurrentStep,
+  setRegistrationMode,
   setIsTransitioning,
   setCompanyRegion,
+  setPendingRegistrationEmail,
+  setPendingRegistrationData,
 
   // Join team
   setInviteCode,

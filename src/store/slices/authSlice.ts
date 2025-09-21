@@ -61,6 +61,15 @@ const authSlice = createSlice({
         localStorage.setItem('accessToken', payload.accessToken);
         localStorage.setItem('refreshToken', payload.refreshToken);
       })
+      .addMatcher(authApi.endpoints.registerWithInvite.matchFulfilled, (state, { payload }) => {
+        state.user = payload.user;
+        state.accessToken = payload.accessToken;
+        state.refreshToken = payload.refreshToken;
+        state.isAuthenticated = true;
+        state.isLoading = false;
+        localStorage.setItem('accessToken', payload.accessToken);
+        localStorage.setItem('refreshToken', payload.refreshToken);
+      })
       .addMatcher(authApi.endpoints.logout.matchFulfilled, (state) => {
         state.user = null;
         state.accessToken = null;

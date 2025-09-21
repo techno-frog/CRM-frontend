@@ -3,10 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useCreateRoleMutation, Action, ResourceType } from '../../../api/rolesApi';
 import { RoleForm } from '../components/RoleForm';
 import css from './CreateRolePage.module.css';
+import { useNotify } from '../../../hooks/useNotify';
+import { extractErrorMessage } from '../../../utils/extractErrorMessage';
 
 export const CreateRolePage: React.FC = () => {
   const navigate = useNavigate();
   const [createRole, { isLoading, error }] = useCreateRoleMutation();
+  const { success, error: notifyError } = useNotify();
 
   const handleSubmit = async (data: {
     name: string;
@@ -17,9 +20,11 @@ export const CreateRolePage: React.FC = () => {
   }) => {
     try {
       await createRole(data).unwrap();
+      success({ title: 'Роль создана', text: 'Теперь её можно назначать' });
       navigate('/roles');
     } catch (err) {
       console.error('Ошибка создания роли:', err);
+      notifyError({ title: 'Не удалось создать роль', text: extractErrorMessage(err, 'Проверь данные и попробуй снова') });
     }
   };
 

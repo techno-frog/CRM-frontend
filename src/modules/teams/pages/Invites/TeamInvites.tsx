@@ -4,6 +4,8 @@ import { useSendInviteMutation, useLazySearchUsersQuery, useInviteUserMutation }
 import { Search, Link as LinkIcon, Copy, Send } from 'lucide-react';
 import CreateInviteModal from './CreateInviteModal';
 import css from './TeamInvites.module.css';
+import { useNotify } from '../../../../hooks/useNotify';
+import { extractErrorMessage } from '../../../../utils/extractErrorMessage';
 
 const TeamInvites: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,22 +19,54 @@ const TeamInvites: React.FC = () => {
   const [perpetualInvite] = useState<boolean>(false);
   const [link, setLink] = useState<string>('');
   const [query, setQuery] = useState('');
-  const [search, { data: users, isFetching: searching }] = useLazySearchUsersQuery();
+  const [users, setUsers] = useState<any[]>([]);
+  const [search, { isFetching: searching }] = useLazySearchUsersQuery();
 
   const [sendInvite, { isLoading: sending }] = useSendInviteMutation();
   const [inviteUser] = useInviteUserMutation();
   const [modalOpen, setModalOpen] = useState(false);
+  const { success, error: notifyError } = useNotify();
 
   const handleSend = async () => {
     if (!teamId || !email) return;
-    await sendInvite({ teamId, email, maxActivations: maxActs, role, note }).unwrap();
-    setEmail('');
+    try {
+      await sendInvite({ teamId, email, maxActivations: maxActs, role, note }).unwrap();
+      success({ title: 'Приглашение отправлено', text: `Мы написали ${email}` });
+      setEmail('');
+    } catch (err) {
+      console.error('Ошибка отправки инвайта:', err);
+      notifyError({ title: 'Не удалось отправить письмо', text: extractErrorMessage(err, 'Попробуй ещё раз позже') });
+    }
+  };
+
+  const handleInviteExisting = async (userEmail: string) => {
+    if (!teamId) return;
+    try {
+      await inviteUser({ teamId, userEmail, expiresAt: perpetualInvite ? undefined : expiresAt }).unwrap();
+      success({ title: 'Пользователь приглашён', text: `${userEmail} получил приглашение` });
+    } catch (err) {
+      console.error('Ошибка приглашения пользователя:', err);
+      notifyError({ title: 'Не удалось пригласить', text: extractErrorMessage(err, 'Проверь данные и попробуй снова') });
+    }
   };
 
   useEffect(() => {
     const q = query.trim();
-    if (!q || q.length < 2) return;
-    const t = setTimeout(() => search(q), 400);
+    if (!q) {
+      setUsers([]); // Clear previous results when field is empty
+      return;
+    }
+    if (q.length < 2) return;
+
+    const t = setTimeout(async () => {
+      try {
+        const result = await search(q).unwrap();
+        setUsers(result || []);
+      } catch (err) {
+        setUsers([]);
+      }
+    }, 400);
+
     return () => clearTimeout(t);
   }, [query, search]);
 
@@ -62,7 +96,7 @@ const TeamInvites: React.FC = () => {
                     <div className={css.cardTitle}>{u.name || u.email}</div>
                     <div className={css.cardSubtitle}>{u.email}</div>
                   </div>
-                  <button className={css.secondaryBtn} onClick={() => inviteUser({ teamId, userEmail: u.email, expiresAt: perpetualInvite ? undefined : expiresAt })}>Пригласить</button>
+                  <button className={css.secondaryBtn} onClick={() => handleInviteExisting(u.email)}>Пригласить</button>
                 </div>
               ))}
             </div>

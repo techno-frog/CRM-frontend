@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../../../api/authApi';
 import { Mail, Lock, Sparkles } from 'lucide-react';
 import css from './LoginPage.module.css';
+import { useNotify } from '../../../../hooks/useNotify';
+import { extractErrorMessage } from '../../../../utils/extractErrorMessage';
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [login, { isLoading, isError, isSuccess }] = useLoginMutation();
+  const [login, { isLoading, isError }] = useLoginMutation();
   const navigate = useNavigate();
+  const { success, error: notifyError } = useNotify();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await login({ email, password }).unwrap();
+      success({ title: 'Добро пожаловать', text: 'Мы уже прогреваем твой рабочий стол' });
+      navigate('/');
     } catch (err) {
       console.error('Ошибка входа:', err);
+      notifyError({ title: 'Не удалось войти', text: extractErrorMessage(err, 'Проверь почту и пароль') });
     }
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      navigate('/');
-    }
-  }, [isSuccess]);
 
   return (
     <div className={css.container}>

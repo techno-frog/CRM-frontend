@@ -9,6 +9,8 @@ import {
   Action
 } from '../../../api/rolesApi';
 import css from './AssignRolePage.module.css';
+import { useNotify } from '../../../hooks/useNotify';
+import { extractErrorMessage } from '../../../utils/extractErrorMessage';
 
 export const AssignRolePage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +25,7 @@ export const AssignRolePage: React.FC = () => {
   const [assignRoleToUser, { isLoading: isAssigningUser }] = useAssignRoleToUserMutation();
   const [assignRoleToResource, { isLoading: isAssigningResource }] = useAssignRoleToResourceMutation();
   const { data: userRoles } = useGetUserRolesQuery(userId, { skip: !userId });
+  const { success, error: notifyError } = useNotify();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,10 +42,11 @@ export const AssignRolePage: React.FC = () => {
           additionalActions: additionalActions.length > 0 ? additionalActions : undefined
         }).unwrap();
       }
+      success({ title: 'Роль назначена', text: 'Права уже применены' });
       navigate('/roles');
     } catch (err) {
       console.error('Ошибка назначения роли:', err);
-      alert('Не получилось назначить роль, бро!');
+      notifyError({ title: 'Не удалось назначить роль', text: extractErrorMessage(err, 'Попробуй снова чуть позже') });
     }
   };
 

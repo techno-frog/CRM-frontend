@@ -4,7 +4,7 @@ import css from './Modal.module.css';
 
 interface ModalProps {
   open: boolean;
-  title?: string;
+  title?: React.ReactNode;
   onClose: () => void;
   footer?: React.ReactNode;
   absolute?: boolean;
