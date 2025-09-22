@@ -1,8 +1,12 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import css from './DefaultLayout.module.css';
+import { useTeamInviteNotifications } from '../hooks/useNotifications';
 
 export const DefaultLayout: React.FC = () => {
+  // Enable team invite notifications globally for authenticated users
+  useTeamInviteNotifications();
+
   return (
     <div className={css.container}>
       <main className={css.main}>

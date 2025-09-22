@@ -21,6 +21,8 @@ const TeamInvites: React.FC = () => {
   const [query, setQuery] = useState('');
   const [users, setUsers] = useState<any[]>([]);
   const [search, { isFetching: searching }] = useLazySearchUsersQuery();
+  const [loadingUsers, setLoadingUsers] = useState<Set<string>>(new Set());
+  const [successUsers, setSuccessUsers] = useState<Set<string>>(new Set());
 
   const [sendInvite, { isLoading: sending }] = useSendInviteMutation();
   const [inviteUser] = useInviteUserMutation();
@@ -39,14 +41,39 @@ const TeamInvites: React.FC = () => {
     }
   };
 
-  const handleInviteExisting = async (userEmail: string) => {
+  const handleInviteExisting = async (userEmail: string, userId: string) => {
     if (!teamId) return;
+
+    // Добавляем в загрузку
+    setLoadingUsers(prev => new Set(prev).add(userId));
+    setSuccessUsers(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(userId);
+      return newSet;
+    });
+
     try {
       await inviteUser({ teamId, userEmail, expiresAt: perpetualInvite ? undefined : expiresAt }).unwrap();
       success({ title: 'Пользователь приглашён', text: `${userEmail} получил приглашение` });
+
+      // Переводим в успех
+      setLoadingUsers(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(userId);
+        return newSet;
+      });
+      setSuccessUsers(prev => new Set(prev).add(userId));
+
     } catch (err) {
       console.error('Ошибка приглашения пользователя:', err);
       notifyError({ title: 'Не удалось пригласить', text: extractErrorMessage(err, 'Проверь данные и попробуй снова') });
+
+      // Убираем из загрузки при ошибке
+      setLoadingUsers(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(userId);
+        return newSet;
+      });
     }
   };
 
@@ -96,7 +123,18 @@ const TeamInvites: React.FC = () => {
                     <div className={css.cardTitle}>{u.name || u.email}</div>
                     <div className={css.cardSubtitle}>{u.email}</div>
                   </div>
-                  <button className={css.secondaryBtn} onClick={() => handleInviteExisting(u.email)}>Пригласить</button>
+                  {!loadingUsers.has(u.id) && !successUsers.has(u.id) ? (
+                    <button className={css.secondaryBtn} onClick={() => handleInviteExisting(u.email, u.id)}>Пригласить</button>
+                  ) : loadingUsers.has(u.id) ? (
+                    <div className={css.loadingBtn}>
+                      ⏳ Отправляем приглашение...
+                    </div>
+                  ) : (
+                    <div className={css.successBtn}>
+                      <span className={css.checkmark}>✅</span>
+                      Приглашение отправлено
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

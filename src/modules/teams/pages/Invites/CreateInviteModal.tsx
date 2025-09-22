@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from '../../../../shared/components/Modal/Modal';
 import css from './CreateInviteModal.module.css';
 import modalCss from '../../../../shared/components/Modal/Modal.module.css';
@@ -13,13 +13,59 @@ interface Props {
   onCreated?: (token: string) => void;
 }
 
+// CSS анимации для галочки
+const animationStyles = `
+  @keyframes checkmarkScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 53%, 80%, 100% {
+      transform: translate3d(0,0,0);
+    }
+    40%, 43% {
+      transform: translate3d(0, -15px, 0);
+    }
+    70% {
+      transform: translate3d(0, -7px, 0);
+    }
+    90% {
+      transform: translate3d(0, -2px, 0);
+    }
+  }
+`;
+
 const CreateInviteModal: React.FC<Props> = ({ teamId, open, onClose, onCreated }) => {
   const [role, setRole] = useState('member');
   const [note, setNote] = useState('');
   const [maxActs, setMaxActs] = useState(1);
   const [expiresAt, setExpiresAt] = useState('');
-  const [createLink, { isLoading }] = useCreateInviteLinkMutation();
+  const [createLink, { isLoading, isSuccess }] = useCreateInviteLinkMutation();
   const { success, error: notifyError } = useNotify();
+
+  // Добавить CSS анимации в head
+  useEffect(() => {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = animationStyles;
+    document.head.appendChild(styleElement);
+
+    return () => {
+      if (document.head.contains(styleElement)) {
+        document.head.removeChild(styleElement);
+      }
+    };
+  }, []);
 
   const minus = () => setMaxActs(Math.max(1, maxActs - 1));
   const plus = () => setMaxActs(Math.min(9999, maxActs + 1));
@@ -39,8 +85,38 @@ const CreateInviteModal: React.FC<Props> = ({ teamId, open, onClose, onCreated }
   return (
     <Modal open={open} onClose={onClose} title="Создание инвайт‑ссылки" footer={
       <>
-        <button className={`${modalCss.btn} ${modalCss.ghost}`} onClick={onClose}>Отмена</button>
-        <button className={`${modalCss.btn} ${modalCss.primary}`} onClick={submit} disabled={isLoading}>Создать</button>
+        {!isLoading && !isSuccess && (
+          <button className={`${modalCss.btn} ${modalCss.ghost}`} onClick={onClose}>Отмена</button>
+        )}
+
+        {!isLoading && !isSuccess ? (
+          <button className={`${modalCss.btn} ${modalCss.primary}`} onClick={submit}>Создать</button>
+        ) : isLoading ? (
+          <div className={`${modalCss.btn} ${modalCss.primary}`} style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            cursor: 'default',
+            opacity: 0.8
+          }}>
+            ⏳ Отправляем приглашение...
+          </div>
+        ) : (
+          <div className={`${modalCss.btn} ${modalCss.primary}`} style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            cursor: 'default',
+            backgroundColor: '#10b981',
+            animation: 'checkmarkScale 0.5s ease-in-out'
+          }}>
+            <span style={{
+              animation: 'bounce 0.6s ease-in-out',
+              display: 'inline-block'
+            }}>✅</span>
+            Приглашение отправлено
+          </div>
+        )}
       </>
     }>
       <div className={css.grid}>

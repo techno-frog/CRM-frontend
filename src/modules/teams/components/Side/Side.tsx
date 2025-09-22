@@ -2,7 +2,8 @@ import React from 'react';
 import { Users, UserPlus } from 'lucide-react';
 import css from './Side.module.css';
 
-type Member = { _id?: string; id?: string; name?: string; email?: string };
+type User = { _id?: string; id?: string; name?: string; email?: string }
+type Member = { role: string, user: User };
 
 interface SideProps {
   members: Member[];
@@ -49,11 +50,11 @@ const Side: React.FC<SideProps> = ({ members, loading }) => {
       ) : (
         <div className={css.membersList}>
           {members.map((m) => (
-            <div key={m._id || m.id || m.email} className={css.memberItem}>
-              <div className={css.memberAvatar}>{getInitials(m.name || m.email || '?')}</div>
+            <div key={m.user._id || m.user.id || m.user.email} className={css.memberItem}>
+              <div className={css.memberAvatar}>{getInitials(m.user.name || m.user.email || '?')}</div>
               <div className={css.memberInfo}>
-                <div className={css.memberName}>{m.name || '—'}</div>
-                <div className={css.memberRole}>{m.email}</div>
+                <div className={css.memberName}>{m.user.name || '—'}</div>
+                <div className={css.memberRole}>{m.user.email}</div>
               </div>
             </div>
           ))}

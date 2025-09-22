@@ -5,6 +5,7 @@ import { store } from '../store/store';
 import { ThemeProvider } from './ThemeProvider';
 import { AuthProvider } from './AuthProvider';
 import { NotifyProvider } from './NotifyProvider';
+import { NotificationProvider } from './NotificationProvider';
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -17,7 +18,9 @@ export const AppProviders: React.FC<AppProvidersProps> = ({ children }) => {
         <ThemeProvider>
           <AuthProvider>
             <NotifyProvider>
-              {children}
+              <NotificationProvider>
+                {children}
+              </NotificationProvider>
             </NotifyProvider>
           </AuthProvider>
         </ThemeProvider>
