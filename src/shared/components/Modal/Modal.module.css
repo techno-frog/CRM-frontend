@@ -25,7 +25,8 @@
   box-shadow: var(--shadow-lg);
   padding: var(--spacing-lg);
   position: relative;
-  z-index: 1; /* above overlay */
+  z-index: 1;
+  /* above overlay */
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
@@ -38,22 +39,57 @@
   margin-bottom: var(--spacing-md);
 }
 
-.title { color: var(--text-primary); font-weight: 700; }
-.closeBtn { background: transparent; border: 0; color: var(--text-primary); cursor: pointer; }
+.title {
+  color: var(--text-primary);
+  font-weight: 700;
+}
 
-.body { display: grid; gap: var(--spacing-md); }
-.footer { display: flex; justify-content: flex-end; gap: var(--spacing-sm); margin-top: var(--spacing-md); }
+.closeBtn {
+  background: transparent;
+  border: 0;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.body {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
 
 .btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 12px; border-radius: var(--radius-md); cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
 }
-.primary { background: var(--accent-primary); color: white; border: none; }
-.ghost { background: var(--glass-bg); color: var(--text-primary); border: 1px solid var(--glass-border); }
+
+.primary {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+}
+
+.ghost {
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+}
 
 /* Full-screen modal on mobile */
 @media (max-width: 767px) {
-  .modal { align-items: stretch; }
+  .modal {
+    align-items: stretch;
+  }
+
   .panel {
     max-width: none;
     width: 100%;
@@ -61,23 +97,26 @@
     border-radius: 0;
     padding: var(--spacing-md);
   }
+
   .header {
     position: sticky;
     top: 0;
-    background: var(--glass-bg);
+    /* background: var(--glass-bg); */
     border-bottom: 1px solid var(--glass-border);
     z-index: 2;
-    padding-bottom: var(--spacing-sm);
+    padding-bottom: 1em;
   }
+
   .body {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
   }
+
   .footer {
     position: sticky;
     bottom: 0;
-    background: var(--glass-bg);
+    /* background: var(--glass-bg); */
     border-top: 1px solid var(--glass-border);
     padding-top: var(--spacing-sm);
   }

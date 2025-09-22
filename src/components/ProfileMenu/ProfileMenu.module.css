@@ -1,0 +1,156 @@
+/* Mobile Overlay Styles */
+.mobileOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.3s ease-out;
+}
+
+.mobileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.mobileTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  padding: 4px;
+  color: #6b7280;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.closeButton:hover {
+  background-color: #f3f4f6;
+}
+
+.mobileContent {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Desktop Dropdown Styles */
+.desktopDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 400px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  margin-top: 8px;
+  max-height: 600px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.desktopContent {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+}
+
+/* Override Modal footer background */
+:global(.footer) .footerButtons {
+  background: transparent !important;
+}
+
+.footerButtons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  text-decoration: none;
+  color: #374151;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.navButton:hover {
+  color: #111827;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .mobileOverlay {
+    background-color: #1f2937;
+  }
+
+  .desktopDropdown {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  .mobileTitle {
+    color: #f9fafb;
+  }
+
+  .closeButton {
+    color: #9ca3af;
+  }
+
+  .closeButton:hover {
+    background-color: #374151;
+  }
+
+  .navButton {
+    color: #d1d5db;
+  }
+
+  .navButton:hover {
+    color: #f9fafb;
+  }
+
+}

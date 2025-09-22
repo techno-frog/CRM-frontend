@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Menu, X, Sun, Moon, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import css from './Topbar.module.css';
 import type { RouteConfig } from '../../../../types/module.types';
 import { FaUser } from 'react-icons/fa';
+import { ProfileMenu } from '../../../../components/ProfileMenu';
 
 interface TopbarProps {
   userName?: string;
@@ -24,7 +25,9 @@ export const Topbar: React.FC<TopbarProps> = ({
   routes,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const navigate = useNavigate()
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const profileButtonRef = useRef<HTMLButtonElement>(null);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -64,15 +67,24 @@ export const Topbar: React.FC<TopbarProps> = ({
               </div>
             </button>
 
-            <button
-              onClick={() => navigate('/profile')}
-              className={css.userBtn}
-              aria-label={theme === 'light' ? 'Тёмная тема' : 'Светлая тема'}
-            >
-              <div className={css.themeIcon}>
-                <FaUser size={20} />
-              </div>
-            </button>
+            <div style={{ position: 'relative' }}>
+              <button
+                ref={profileButtonRef}
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                className={css.userBtn}
+                aria-label="Открыть меню профиля"
+              >
+                <div className={css.themeIcon}>
+                  <FaUser size={20} />
+                </div>
+              </button>
+
+              <ProfileMenu
+                isOpen={isProfileMenuOpen}
+                onClose={() => setIsProfileMenuOpen(false)}
+                triggerRef={profileButtonRef}
+              />
+            </div>
 
             {/* Кнопка выхода на десктопе */}
             <button

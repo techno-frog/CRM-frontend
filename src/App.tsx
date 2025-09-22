@@ -28,7 +28,7 @@ export const App: React.FC = () => {
         <Route path="/*" element={<ModuleRouter modules={RouteRegistry.getModules()} />} />
       </Routes>
       {/* Notification Test Component - only in development */}
-      {process.env.NODE_ENV === 'development' && <NotificationTest />}
+      {/* {process.env.NODE_ENV === 'development' && <NotificationTest />} */}
     </>
   );
 };

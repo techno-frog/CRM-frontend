@@ -137,6 +137,7 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   position: relative;
+  margin-right: 5px;
 }
 
 .pageButton:hover:not(:disabled):not(.activePage) {

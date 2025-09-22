@@ -1,0 +1,123 @@
+.activityItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--accent-gradient) !important;
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.activityItem.unread {
+  background: var(--color-bg-primary);
+  border-color: var(--color-primary);
+}
+
+.activityItem.clickable {
+  cursor: pointer;
+}
+
+.activityItem.clickable:hover {
+  background: var(--color-bg-hover) !important;
+  border-color: var(--color-border-hover);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.text {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.meta {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
+.time {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: red !important;
+}
+
+.actionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.actionButton.confirm {
+  background: var(--color-success);
+  color: white;
+}
+
+.actionButton.confirm:hover:not(:disabled) {
+  background: var(--color-success-hover);
+}
+
+.actionButton.accept {
+  background: var(--color-success) !important;
+  color: white;
+}
+
+.actionButton.accept:hover:not(:disabled) {
+  background: var(--color-success-hover);
+}
+
+.actionButton.decline {
+  background: var(--color-danger);
+  color: white;
+}
+
+.actionButton.decline:hover:not(:disabled) {
+  background: var(--color-danger-hover);
+}
+
+.unreadDot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
