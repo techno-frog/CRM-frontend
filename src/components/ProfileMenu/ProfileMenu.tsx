@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Settings, Users, Bell } from 'lucide-react';
+import { User, Settings, Users, Bell, Globe } from 'lucide-react';
 import { ActivitiesList } from './ActivitiesList';
 import { TeamActivitiesList } from './TeamActivitiesList';
+import { TeamActivitiesGlobalList } from './TeamActivitiesGlobalList';
 import Modal from '../../shared/components/Modal/Modal';
 import css from './ProfileMenu.module.css';
 
@@ -15,7 +16,7 @@ interface ProfileMenuProps {
 
 export const ProfileMenu: React.FC<ProfileMenuProps> = ({ isOpen, onClose, triggerRef, teamId }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [activeTab, setActiveTab] = useState<'user' | 'team'>('user');
+  const [activeTab, setActiveTab] = useState<'user' | 'team' | 'global'>('user');
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,13 +67,20 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({ isOpen, onClose, trigg
         <Bell size={16} />
         Мои активности
       </button>
+      <button
+        className={`${css.tabButton} ${activeTab === 'global' ? css.active : ''}`}
+        onClick={() => setActiveTab('global')}
+      >
+        <Globe size={16} />
+        Команды
+      </button>
       {teamId && (
         <button
           className={`${css.tabButton} ${activeTab === 'team' ? css.active : ''}`}
           onClick={() => setActiveTab('team')}
         >
           <Users size={16} />
-          Команда
+          Текущая команда
         </button>
       )}
     </div>
@@ -81,6 +89,9 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({ isOpen, onClose, trigg
   const renderContent = () => {
     if (activeTab === 'team' && teamId) {
       return <TeamActivitiesList teamId={teamId} />;
+    }
+    if (activeTab === 'global') {
+      return <TeamActivitiesGlobalList />;
     }
     return <ActivitiesList />;
   };

@@ -6,6 +6,8 @@ import css from './Topbar.module.css';
 import type { RouteConfig } from '../../../../types/module.types';
 import { FaUser } from 'react-icons/fa';
 import { ProfileMenu } from '../../../../components/ProfileMenu';
+import { NotificationBadge } from '../../../../components/NotificationBadge/NotificationBadge';
+import { useNotificationCounts } from '../../../../hooks/useNotificationCounts';
 
 interface TopbarProps {
   userName?: string;
@@ -28,6 +30,7 @@ export const Topbar: React.FC<TopbarProps> = ({
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const profileButtonRef = useRef<HTMLButtonElement>(null);
+  const { counts, resetCounts } = useNotificationCounts();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -77,6 +80,10 @@ export const Topbar: React.FC<TopbarProps> = ({
                 <div className={css.themeIcon}>
                   <FaUser size={20} />
                 </div>
+                <NotificationBadge
+                  personalCount={counts.personal}
+                  teamCount={counts.team}
+                />
               </button>
 
               <ProfileMenu

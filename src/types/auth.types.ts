@@ -10,6 +10,8 @@ export interface User {
   id: string;
   email: string;
   name: string;
+  username: string;
+  user: User;
   roles: Role[];
   teams?: Team[]
 }

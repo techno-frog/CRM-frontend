@@ -111,10 +111,11 @@ export const DashboardLayout: React.FC = () => {
       />
 
       {/* Основная область */}
-      <div className={css.mainWrapper}>
+      <div onClick={() => console.log(user)} className={css.mainWrapper}>
         {/* Topbar - вверху основной области */}
         <Topbar
-          userName={user?.name}
+
+          userName={user?.user?.username}
           theme={theme}
           onToggleTheme={toggleTheme}
           onLogout={handleLogout}

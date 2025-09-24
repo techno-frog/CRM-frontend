@@ -1,5 +1,6 @@
 export enum NotificationEventType {
   TEAM_ACTIVITY = 'team.activity',
+  TEAM_ACTIVITY_CREATED = 'team.activity.created',
   TASK_RECEIVED = 'task.received',
   INVITE_RECEIVED = 'invite.received',
   DIRECT_MESSAGE = 'message.direct',

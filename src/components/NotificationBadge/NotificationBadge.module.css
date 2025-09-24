@@ -1,0 +1,66 @@
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  z-index: 10;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Личные уведомления - синий горошек слева */
+.badge.personal.left {
+  left: -8px;
+  background-color: #3b82f6; /* Blue-500 */
+}
+
+/* Командные уведомления - зеленый горошек справа */
+.badge.team.right {
+  right: -8px;
+  background-color: #10b981; /* Green-500 */
+}
+
+/* Анимация появления */
+.badge {
+  animation: badgeAppear 0.3s ease-out;
+}
+
+@keyframes badgeAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Hover эффекты */
+.badge:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+  .badge.personal.left {
+    background-color: #2563eb; /* Blue-600 */
+  }
+
+  .badge.team.right {
+    background-color: #059669; /* Green-600 */
+  }
+}

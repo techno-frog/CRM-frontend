@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Clock, RefreshCw } from 'lucide-react';
 import { useGetTeamActivitiesQuery } from '../../api/teamActivitiesApi';
+import { useTeamActivityRefetch } from '../../hooks/useTeamActivityRefetch';
 import { TeamActivityItem } from './TeamActivityItem';
 import css from './ActivitiesList.module.css';
 
@@ -10,6 +11,9 @@ interface TeamActivitiesListProps {
 
 export const TeamActivitiesList: React.FC<TeamActivitiesListProps> = ({ teamId }) => {
   const [showHistory, setShowHistory] = useState(false);
+
+  // Setup auto-refetch for team activities
+  useTeamActivityRefetch({ teamId });
 
   // Fetch recent activities (not archived)
   const {

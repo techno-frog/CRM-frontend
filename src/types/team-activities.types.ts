@@ -68,6 +68,7 @@ export interface TeamActivity {
   tags: string[];
   isSystem: boolean;
   isArchived: boolean;
+  teamName: string;
   occurredAt: string;
   createdAt: string;
   updatedAt: string;

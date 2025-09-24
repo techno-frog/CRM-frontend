@@ -94,6 +94,15 @@ export const teamActivitiesApi = baseApi.injectEndpoints({
         { type: 'TeamActivities' as const, id: `${teamId}-stats` }
       ],
     }),
+
+    // Get global team activities for user's subscribed teams
+    getGlobalTeamActivities: builder.query<GetTeamActivitiesResponse, { limit?: number; sortBy?: string; sortOrder?: 'asc' | 'desc' }>({
+      query: (params) => ({
+        url: '/team-activities/global/subscribed',
+        params,
+      }),
+      providesTags: ['TeamActivities'],
+    }),
   }),
 });
 
@@ -105,4 +114,5 @@ export const {
   useArchiveTeamActivityMutation,
   useDeleteTeamActivityMutation,
   useGetTeamActivityStatsQuery,
+  useGetGlobalTeamActivitiesQuery,
 } = teamActivitiesApi;

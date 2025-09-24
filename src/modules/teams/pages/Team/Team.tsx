@@ -15,6 +15,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useGetTeamQuery } from '../../../../api/teamsApi';
 import { TeamActivitiesList } from '../../../../components/ProfileMenu/TeamActivitiesList';
 import { TeamActivitySubscriptionModal } from '../../../../components/TeamActivitySubscriptionModal/TeamActivitySubscriptionModal';
+import { useTeamActivityRefetch } from '../../../../hooks/useTeamActivityRefetch';
 
 
 const Team: React.FC = () => {
@@ -22,6 +23,9 @@ const Team: React.FC = () => {
   const { data: team, isFetching, error } = useGetTeamQuery(id || '', { skip: !id });
   const navigate = useNavigate();
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+
+  // Настройка автоматического обновления активностей команды при получении уведомлений
+  useTeamActivityRefetch({ teamId: id });
 
   return (
     <div className={css.teamContainer}>
