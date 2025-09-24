@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Settings } from 'lucide-react';
+import { User, Settings, Users, Bell } from 'lucide-react';
 import { ActivitiesList } from './ActivitiesList';
+import { TeamActivitiesList } from './TeamActivitiesList';
 import Modal from '../../shared/components/Modal/Modal';
 import css from './ProfileMenu.module.css';
 
@@ -9,10 +10,12 @@ interface ProfileMenuProps {
   isOpen: boolean;
   onClose: () => void;
   triggerRef?: React.RefObject<HTMLElement>;
+  teamId?: string; // Optional team ID for team activities
 }
 
-export const ProfileMenu: React.FC<ProfileMenuProps> = ({ isOpen, onClose, triggerRef }) => {
+export const ProfileMenu: React.FC<ProfileMenuProps> = ({ isOpen, onClose, triggerRef, teamId }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [activeTab, setActiveTab] = useState<'user' | 'team'>('user');
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,6 +57,34 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({ isOpen, onClose, trigg
 
   if (!isOpen) return null;
 
+  const renderTabButtons = () => (
+    <div className={css.tabButtons}>
+      <button
+        className={`${css.tabButton} ${activeTab === 'user' ? css.active : ''}`}
+        onClick={() => setActiveTab('user')}
+      >
+        <Bell size={16} />
+        Мои активности
+      </button>
+      {teamId && (
+        <button
+          className={`${css.tabButton} ${activeTab === 'team' ? css.active : ''}`}
+          onClick={() => setActiveTab('team')}
+        >
+          <Users size={16} />
+          Команда
+        </button>
+      )}
+    </div>
+  );
+
+  const renderContent = () => {
+    if (activeTab === 'team' && teamId) {
+      return <TeamActivitiesList teamId={teamId} />;
+    }
+    return <ActivitiesList />;
+  };
+
   if (isMobile) {
     return (
       <Modal
@@ -74,7 +105,8 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({ isOpen, onClose, trigg
           </div>
         }
       >
-        <ActivitiesList />
+        {renderTabButtons()}
+        {renderContent()}
       </Modal>
     );
   }
@@ -83,7 +115,8 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({ isOpen, onClose, trigg
     <div ref={menuRef} className={css.desktopDropdown}>
       {/* Desktop Content */}
       <div className={css.desktopContent}>
-        <ActivitiesList />
+        {renderTabButtons()}
+        {renderContent()}
 
         <div className={css.navigationButtons}>
           <Link to="/profile" className={css.navButton} onClick={onClose}>

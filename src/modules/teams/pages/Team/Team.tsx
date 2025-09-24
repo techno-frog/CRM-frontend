@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Users,
   Calendar,
@@ -7,18 +7,21 @@ import {
   UserPlus,
   Activity,
   Target,
-  MessageSquare
+  MessageSquare,
+  Bell
 } from 'lucide-react';
 import css from './Team.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetTeamQuery } from '../../../../api/teamsApi';
+import { TeamActivitiesList } from '../../../../components/ProfileMenu/TeamActivitiesList';
+import { TeamActivitySubscriptionModal } from '../../../../components/TeamActivitySubscriptionModal/TeamActivitySubscriptionModal';
 
 
 const Team: React.FC = () => {
-
   const { id } = useParams();
   const { data: team, isFetching, error } = useGetTeamQuery(id || '', { skip: !id });
   const navigate = useNavigate();
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
 
   return (
     <div className={css.teamContainer}>
@@ -32,24 +35,39 @@ const Team: React.FC = () => {
           </>
         ) : (
           <>
-            <h1 className={css.teamTitle}>
-
-              {!error ? (
-                <>
-                  Команда <span className={css.gradientText}>{team?.title || '—'}</span>
-                </>
-              ) :
-                <>Команда не доступна</>
-              }
-            </h1>
-            {!error && (
-              <p className={css.teamSubtitle}>
-                {team?.isPublic ? 'Публичная команда' : 'Приватная команда'}
-              </p>
-            )}
-            <div className={css.teamId}>
-              <span className={css.teamIdLabel}>ID:</span>
-              <span className={css.teamIdValue}>{team?.id || id}</span>
+            <div className={css.teamHeaderContent}>
+              <div className={css.teamTitleSection}>
+                <h1 className={css.teamTitle}>
+                  {!error ? (
+                    <>
+                      Команда <span className={css.gradientText}>{team?.title || '—'}</span>
+                    </>
+                  ) :
+                    <>Команда не доступна</>
+                  }
+                </h1>
+                {!error && (
+                  <p className={css.teamSubtitle}>
+                    {team?.isPublic ? 'Публичная команда' : 'Приватная команда'}
+                  </p>
+                )}
+                <div className={css.teamId}>
+                  <span className={css.teamIdLabel}>ID:</span>
+                  <span className={css.teamIdValue}>{team?.id || id}</span>
+                </div>
+              </div>
+              {!error && (
+                <div className={css.teamHeaderActions}>
+                  <button
+                    className={css.subscribeButton}
+                    onClick={() => setIsSubscriptionModalOpen(true)}
+                    title="Подписаться на события команды"
+                  >
+                    <Bell size={20} />
+                    Подписаться на события
+                  </button>
+                </div>
+              )}
             </div>
           </>
         )}
@@ -169,15 +187,22 @@ const Team: React.FC = () => {
                   Активность команды
                 </h3>
                 <div className={css.sectionContent}>
-                  <div className={css.placeholder}>
-                    История активности команды будет отображаться здесь
-                  </div>
+                  {id && <TeamActivitiesList teamId={id} />}
                 </div>
               </div>
             </>
           )}
         </div>
       </div>
+
+      {/* Modal for activity subscriptions */}
+      {id && (
+        <TeamActivitySubscriptionModal
+          isOpen={isSubscriptionModalOpen}
+          onClose={() => setIsSubscriptionModalOpen(false)}
+          teamId={id}
+        />
+      )}
     </div>
   );
 };

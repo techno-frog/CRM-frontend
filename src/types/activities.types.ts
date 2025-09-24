@@ -44,5 +44,3 @@ export interface GetActivitiesResponse {
   hasMore: boolean;
 }
 
-// Explicit re-exports for better compatibility
-export type { UserActivity };

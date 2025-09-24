@@ -90,7 +90,21 @@ export const DashboardLayout: React.FC = () => {
       {/* Sidebar - фиксированный слева */}
 
       <Sidebar
-        routes={navigableRoutes}
+        routes={navigableRoutes.filter(route => {
+          // Если у маршрута нет ограничений по ролям, показываем всем
+          if (!route.allowedRoles || route.allowedRoles.length === 0) {
+            return true;
+          }
+
+          // Если у пользователя нет ролей, не показываем маршруты с ограничениями
+          if (!user?.roles || user.roles.length === 0) {
+            return false;
+          }
+
+          // Проверяем, есть ли у пользователя хотя бы одна из разрешенных ролей
+          return route.allowedRoles.some(allowedRole => user.roles.includes(allowedRole));
+        })}
+
         onLogout={handleLogout}
         isCollapsed={isSidebarCollapsed}
         onToggleCollapse={toggleSidebar}
@@ -105,7 +119,16 @@ export const DashboardLayout: React.FC = () => {
           onToggleTheme={toggleTheme}
           onLogout={handleLogout}
           isSidebarCollapsed={isSidebarCollapsed}
-          routes={navigableRoutes}
+          routes={navigableRoutes.filter(route => {
+            if (!route.allowedRoles || route.allowedRoles.length === 0) {
+              return true;
+            }
+            if (!user?.roles || user.roles.length === 0) {
+              return false;
+            }
+            return route.allowedRoles.some(allowedRole => user.roles?.includes(allowedRole));
+          })}
+
         />
 
         {/* Область контента и чата */}
@@ -120,6 +143,7 @@ export const DashboardLayout: React.FC = () => {
 
           {/* Секция чата */}
           <aside className={`${css.chatSection} ${isChatOpen ? css.active : ''}`}>
+            lol
             {/* Чат будет здесь */}
             {/* Для тестирования добавь кнопку toggleChat и вызывай setIsChatOpen(!isChatOpen) */}
           </aside>

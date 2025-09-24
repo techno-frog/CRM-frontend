@@ -71,6 +71,13 @@ export const teamsApi = createApi({
       }),
       invalidatesTags: ['teams', 'userTeams'],
     }),
+    leaveTeam: builder.mutation<{ status: string; message: string }, string>({
+      query: (teamId) => ({
+        url: `/${teamId}/leave`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['teams'],
+    }),
 
   }),
 });
@@ -78,6 +85,7 @@ export const teamsApi = createApi({
 export const {
   useCreateTeamMutation,
   useJoinTeamMutation,
+  useLeaveTeamMutation,
   useGetMyTeamsQuery,
   useGetMyTeamsPaginatedQuery,
   useGetTeamQuery

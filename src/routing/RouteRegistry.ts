@@ -1,4 +1,4 @@
-import type { Module } from '../types/module.types';
+import type { Module, RouteConfig } from '../types/module.types';
 
 class RouteRegistryClass {
   private modules: Module[] = [];
@@ -15,7 +15,7 @@ class RouteRegistryClass {
     return this.modules.find(e => e.id == id)?.widget
   }
 
-  getNavigableRoutes() {
+  getNavigableRoutes(): RouteConfig[] {
     const flattenRoutes = (routes: any[], _ = ''): any[] => {
       return routes.reduce((acc, route) => {
         const fullPath = route.path;

@@ -17,7 +17,7 @@ interface TopbarProps {
 }
 
 export const Topbar: React.FC<TopbarProps> = ({
-  userName = 'бро',
+  userName,
   theme,
   onToggleTheme,
   onLogout,

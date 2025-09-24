@@ -23,7 +23,7 @@ export const rolesModule: Module = {
       layout: DashboardLayout,
       navigable: true,
       icon: FaUserShield,
-      allowedRoles: [Role.ADMIN],
+      allowedRoles: ['algo'],
       unauthorizedComponent: GoAuth,
       subModules: [
         {

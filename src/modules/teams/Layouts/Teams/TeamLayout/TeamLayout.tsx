@@ -1,18 +1,32 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar, Menu, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Calendar, ChevronDown } from 'lucide-react';
 import css from './TeamLayout.module.css';
 import { useGetTeamQuery } from '../../../../../api/teamsApi';
 import Side from '../../../components/Side/Side';
+import { HamburgerMenu } from '../../../../../shared/components/HamburgerMenu';
+import type { MenuItem } from '../../../../../shared/components/HamburgerMenu/HamburgerMenu';
 
 const TeamLayout: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { data: team, isFetching } = useGetTeamQuery(id || '', { skip: !id });
   const members = team?.members || [];
 
-  const [menuOpen, setMenuOpen] = useState(false);
   const [mainOpen, setMainOpen] = useState(true);
   const [membersOpen, setMembersOpen] = useState(true);
+
+  const menuItems: MenuItem[] = [
+    {
+      path: '/teams',
+      label: 'Вернуться к командам',
+      icon: ArrowLeft
+    },
+    {
+      path: id ? `/team/${id}/callendar` : '#',
+      label: 'Календарь',
+      icon: Calendar
+    }
+  ];
 
   return (
     <div className={css.wrapper}>
@@ -34,19 +48,7 @@ const TeamLayout: React.FC = () => {
             </Link>
           </div>
           <div className={css.mobileOnly}>
-            <button className={css.menuButton} onClick={() => setMenuOpen(v => !v)} aria-label="Меню">
-              <Menu size={20} />
-            </button>
-            {menuOpen && (
-              <div className={css.menuDropdown} onClick={() => setMenuOpen(false)}>
-                <Link to="/teams" className={css.menuItem}>
-                  <ArrowLeft size={16} /> Вернуться к командам
-                </Link>
-                <Link to={id ? `/team/${id}/callendar` : '#'} className={css.menuItem}>
-                  <Calendar size={16} /> Календарь
-                </Link>
-              </div>
-            )}
+            <HamburgerMenu items={menuItems} />
           </div>
         </header>
 
@@ -55,7 +57,7 @@ const TeamLayout: React.FC = () => {
           <main className={css.contentSection}>
             <Outlet />
           </main>
-          <Side members={members as any[]} loading={isFetching} />
+          <Side members={members as any[]} loading={isFetching} teamName={team?.title} />
         </div>
 
         {/* Мобильная раскладка со шторками */}
@@ -79,7 +81,7 @@ const TeamLayout: React.FC = () => {
             </button>
             {membersOpen && (
               <div className={css.sheetBody}>
-                <Side members={members as any[]} loading={isFetching} />
+                <Side members={members as any[]} loading={isFetching} teamName={team?.title} />
               </div>
             )}
           </section>

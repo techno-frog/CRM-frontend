@@ -439,43 +439,7 @@
 .desktopOnly { display: flex; gap: var(--spacing-md); }
 .mobileOnly { display: none; position: relative; }
 
-.menuButton {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  color: var(--text-primary);
-  padding: 10px 12px;
-  border-radius: var(--radius-md);
-}
-
-.menuDropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: 8px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-md);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.2);
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 10;
-}
-
-.menuItem {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-primary);
-  text-decoration: none;
-  padding: 8px 10px;
-  border-radius: var(--radius-sm);
-}
-.menuItem:hover { background: var(--bg-hover); }
+/* Mobile hamburger menu styles removed - now using universal HamburgerMenu component */
 
 .sheet { padding: var(--spacing-md); }
 .sheetHeader {
@@ -492,12 +456,68 @@
 .sheetTitle { font-weight: 600; }
 .chevron { transition: transform var(--transition-fast); }
 .chevronOpen { transform: rotate(180deg); }
-.sheetBody { padding: var(--spacing-md) 0; }
+.sheetBody {
+  padding: var(--spacing-md) 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 50vh;
+}
+
+/* Скроллбар стилизация */
+.contentSection::-webkit-scrollbar,
+.sheetBody::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.contentSection::-webkit-scrollbar-track,
+.sheetBody::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: var(--radius-sm);
+}
+
+.contentSection::-webkit-scrollbar-thumb,
+.sheetBody::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.contentSection::-webkit-scrollbar-thumb:hover,
+.sheetBody::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
 
 @media (max-width: 767px) {
-  .wrapper { padding: 0; }
-  .container { padding: 0; }
+  .wrapper {
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .container {
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
   .desktopOnly { display: none; }
-  .mobileOnly { display: block; }
-  .header { border-radius: 0; padding: var(--spacing-md); margin-bottom: var(--spacing-md); }
+  .mobileOnly {
+    display: block;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .header {
+    border-radius: 0;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    flex-shrink: 0;
+  }
+  .sheet {
+    padding: var(--spacing-md);
+  }
+  .sheetBody {
+    max-height: none;
+  }
+  /* Mobile menu styles handled by universal HamburgerMenu component */
 }

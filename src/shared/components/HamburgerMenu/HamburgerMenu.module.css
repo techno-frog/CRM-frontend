@@ -1,0 +1,85 @@
+/* Based on main Topbar hamburger menu styles */
+
+.menuButton {
+  display: none;
+  padding: var(--spacing-sm);
+  border: none;
+  background: var(--glass-bg);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.menuButton:hover {
+  background: var(--bg-hover);
+  transform: scale(1.05);
+}
+
+/* Show only on mobile */
+@media (max-width: 768px) {
+  .menuButton {
+    display: flex;
+  }
+}
+
+.menuDropdown {
+  position: fixed;
+  top: calc(var(--spacing-lg) + 60px);
+  left: var(--spacing-lg);
+  right: var(--spacing-lg);
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur) var(--backdrop-saturate);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  z-index: var(--z-modal, 1000);
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menuOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: calc(var(--z-modal, 1000) - 1);
+  backdrop-filter: blur(2px);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.menuItem:hover {
+  background: var(--bg-hover);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 767px) {
+  .menuDropdown {
+    top: calc(var(--spacing-md) + 50px);
+    left: var(--spacing-md);
+    right: var(--spacing-md);
+  }
+}

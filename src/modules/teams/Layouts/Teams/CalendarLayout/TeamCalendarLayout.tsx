@@ -1,18 +1,32 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar, Menu } from 'lucide-react';
+import { ArrowLeft, Calendar } from 'lucide-react';
 import css from './TeamCalendarLayout.module.css';
 import { useGetTeamQuery } from '../../../../../api/teamsApi';
 import Side from '../../../components/Side/Side';
+import { HamburgerMenu } from '../../../../../shared/components/HamburgerMenu';
+import type { MenuItem } from '../../../../../shared/components/HamburgerMenu/HamburgerMenu';
 
 const TeamCalendarLayout: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { data: team, isFetching } = useGetTeamQuery(id || '', { skip: !id });
   const members = team?.members || [];
 
-  const [menuOpen, setMenuOpen] = useState(false);
   // Mobile: only one active sheet at a time
   const [activeSheet, setActiveSheet] = useState<'calendar' | 'members'>('calendar');
+
+  const menuItems: MenuItem[] = [
+    {
+      path: '/teams',
+      label: 'Вернуться к командам',
+      icon: ArrowLeft
+    },
+    {
+      path: id ? `/team/${id}/callendar` : '#',
+      label: 'Календарь',
+      icon: Calendar
+    }
+  ];
 
   return (
     <div className={css.wrapper}>
@@ -36,19 +50,7 @@ const TeamCalendarLayout: React.FC = () => {
           </div>
           {/* Mobile hamburger */}
           <div className={css.mobileOnly}>
-            <button className={css.menuButton} onClick={() => setMenuOpen((v) => !v)} aria-label="Меню">
-              <Menu size={20} />
-            </button>
-            {menuOpen && (
-              <div className={css.menuDropdown} onClick={() => setMenuOpen(false)}>
-                <Link to="/teams" className={css.menuItem}>
-                  <ArrowLeft size={16} /> Вернуться к командам
-                </Link>
-                <Link to={id ? `/team/${id}/callendar` : '#'} className={css.menuItem}>
-                  <Calendar size={16} /> Календарь
-                </Link>
-              </div>
-            )}
+            <HamburgerMenu items={menuItems} />
           </div>
         </header>
 
